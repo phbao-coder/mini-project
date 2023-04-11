@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react';
-import { Form, InputGroup } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
+import { Button, Form, InputGroup } from 'react-bootstrap';
 import { get } from '../request';
-import { search } from '../store';
+import { loading, search } from '../store';
 import useStore from '../hooks/useStore';
 import useDebound from '../hooks/useDebound';
 
 function SearchInput() {
+    const navigate = useNavigate();
     // eslint-disable-next-line no-unused-vars
     const [state, dispatch] = useStore();
     const [inputValue, setInputValue] = useState('');
@@ -14,13 +16,16 @@ function SearchInput() {
 
     useEffect(() => {
         // if debound value is empty, return
-        if (!valueDebound) {
+        if (valueDebound === '') {
+            dispatch(search([]));
             return;
         }
 
         const result = async () => {
-            const res = await get('users', { q: valueDebound });
+            dispatch(loading());
+            const res = await get('search/users', { q: valueDebound });
             dispatch(search(res.data.items));
+            dispatch(loading());
         };
 
         result();
@@ -35,6 +40,14 @@ function SearchInput() {
                     setInputValue(e.target.value);
                 }}
             />
+            <Button
+                variant="outline-secondary"
+                onClick={() => {
+                    navigate('/');
+                }}
+            >
+                Search
+            </Button>
         </InputGroup>
     );
 }

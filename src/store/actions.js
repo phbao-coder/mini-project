@@ -3,3 +3,7 @@ export const search = (payload) => ({
     type: 'SEARCH',
     payload,
 });
+
+export const loading = () => ({
+    type: 'LOADING',
+});

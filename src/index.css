@@ -1,0 +1,33 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    padding: 10px;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+header .logo:hover {
+    color: #212529;
+}
+
+main {
+    width: 100%;
+    min-height: 400px;
+}
+
+a {
+    text-decoration: none;
+    color: #212529;
+}
+
+footer ul li {
+    list-style: none;
+}
