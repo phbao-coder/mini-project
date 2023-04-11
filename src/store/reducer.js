@@ -1,6 +1,7 @@
 const initialState = {
     users: [],
     isLoading: false,
+    isLoadingSearch: false,
 };
 
 const reducer = (state, action) => {
@@ -8,6 +9,7 @@ const reducer = (state, action) => {
         case 'SEARCH':
             return {
                 ...state,
+                isLoadingSearch: !state.isLoadingSearch,
                 users: action.payload,
             };
         case 'LOADING':

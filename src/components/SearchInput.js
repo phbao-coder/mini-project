@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, Form, InputGroup } from 'react-bootstrap';
 import { get } from '../request';
-import { loading, search } from '../store';
+import { search } from '../store';
 import useStore from '../hooks/useStore';
 import useDebound from '../hooks/useDebound';
 
@@ -22,10 +22,9 @@ function SearchInput() {
         }
 
         const result = async () => {
-            dispatch(loading());
+            dispatch(search());
             const res = await get('search/users', { q: valueDebound });
             dispatch(search(res.data.items));
-            dispatch(loading());
         };
 
         result();

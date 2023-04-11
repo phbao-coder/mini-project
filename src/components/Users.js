@@ -19,7 +19,9 @@ function Users() {
         }
     };
 
-    return <ListGroup>{state.isLoading ? <Spinner></Spinner> : render(state.users)} </ListGroup>;
+    return (
+        <ListGroup>{state.isLoadingSearch ? <Spinner></Spinner> : render(state.users)} </ListGroup>
+    );
 }
 
 export default Users;
