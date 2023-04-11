@@ -34,7 +34,7 @@ function Repos() {
         const result = async () => {
             try {
                 dispatch(loading());
-                const res = await get(`users/${params.username}/rep`);
+                const res = await get(`users/${params.username}/reps`);
                 if (res.status === 200) {
                     setRepos(res.data);
                     dispatch(loading());
