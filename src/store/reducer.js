@@ -1,5 +1,6 @@
 const initialState = {
     users: [],
+    user: {},
     isLoading: false,
     isLoadingSearch: false,
 };
@@ -9,13 +10,18 @@ const reducer = (state, action) => {
         case 'SEARCH':
             return {
                 ...state,
-                isLoadingSearch: !state.isLoadingSearch,
-                users: action.payload,
+                isLoadingSearch: action.payload.isLoadingSearch,
+                users: action.payload.users,
             };
         case 'LOADING':
             return {
                 ...state,
                 isLoading: !state.isLoading,
+            };
+        case 'CHOICE_USER':
+            return {
+                ...state,
+                user: action.payload, // payload is user
             };
         default:
             return state;

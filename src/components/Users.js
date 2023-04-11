@@ -1,21 +1,23 @@
 import { Link } from 'react-router-dom';
 import { Image, ListGroup, Spinner } from 'react-bootstrap';
 import useStore from '../hooks/useStore';
+import { chooseUser } from '../store';
 
 function Users() {
-    // eslint-disable-next-line no-unused-vars
     const [state, dispatch] = useStore();
 
     const render = (users) => {
-        if (users.length > 0) {
+        if (users?.length > 0) {
             return state.users?.map((user, index) => (
                 <ListGroup.Item key={index}>
                     <Image src={user.avatar_url} alt={user.login} style={{ width: '40px' }} />{' '}
-                    <Link to={`/${user.login}`}>{user.login}</Link>
+                    <Link to={`/${user.login}`} onClick={() => dispatch(chooseUser(user))}>
+                        {user.login}
+                    </Link>
                 </ListGroup.Item>
             ));
         } else {
-            return <h1>The users list is none.</h1>;
+            return <h1>{users ? 'The users list is none.' : 'Request failed'}</h1>;
         }
     };
 

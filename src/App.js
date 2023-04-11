@@ -3,14 +3,17 @@ import { Link, Route, Routes } from 'react-router-dom';
 import { routes } from './routes/routes';
 import SearchInput from './components/SearchInput';
 import './index.css';
+import useStore from './hooks/useStore';
 
 function App() {
+    // eslint-disable-next-line no-unused-vars
+    const [state, dispatch] = useStore();
     return (
         <div className="container">
             <header>
                 <nav>
                     <Link to={'/'} className="logo">
-                        <h1>Github Search</h1>
+                        <h1>Github Search, {state.user.login}</h1>
                     </Link>
                 </nav>
                 <SearchInput />

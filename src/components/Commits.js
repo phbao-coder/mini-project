@@ -8,6 +8,7 @@ import useStore from '../hooks/useStore';
 function Commits() {
     const params = useParams();
     const [commits, setCommits] = useState([]);
+    const [messageErr, setMessageErr] = useState(null);
     const [state, dispatch] = useStore();
 
     const render = (commits) => {
@@ -22,25 +23,35 @@ function Commits() {
                 </ListGroup.Item>
             ));
         } else {
-            return <h2>The list commits is none.</h2>;
+            return <h2>{messageErr ? messageErr : 'The list commits is none.'}</h2>;
         }
     };
 
     useEffect(() => {
         const result = async () => {
-            dispatch(loading());
-            const res = await get(`repos/${params.username}/${params.repo}/commits?per_page=10`);
-            setCommits(res.data);
-            dispatch(loading());
+            try {
+                dispatch(loading());
+                const res = await get(
+                    `repos/${params.username}/${params.repo}/commits?per_page=10`,
+                );
+                if (res.status === 200) {
+                    setCommits(res.data);
+                    dispatch(loading());
+                    setMessageErr(null);
+                }
+            } catch (error) {
+                dispatch(loading());
+                setMessageErr(error.message);
+            }
         };
 
         result();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [messageErr]);
 
     return (
         <>
-            <h1>Commits of {params.repo}</h1>
+            <h1>Commits of repo {params.repo}</h1>
             <ListGroup>{state.isLoading ? <Spinner></Spinner> : render(commits)}</ListGroup>
         </>
     );

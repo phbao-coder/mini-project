@@ -9,6 +9,7 @@ function Repos() {
     const params = useParams();
     const [state, dispatch] = useStore();
     const [repos, setRepos] = useState([]);
+    const [messageErr, setMessageErr] = useState(null);
 
     const render = (repos) => {
         if (repos.length > 0) {
@@ -25,16 +26,24 @@ function Repos() {
                 </Accordion.Item>
             ));
         } else {
-            return <h2>The list repositories is none.</h2>;
+            return <h2>{messageErr ? messageErr : 'The list repositories is none.'}</h2>;
         }
     };
 
     useEffect(() => {
         const result = async () => {
-            dispatch(loading());
-            const res = await get(`users/${params.username}/repos`);
-            setRepos(res.data);
-            dispatch(loading());
+            try {
+                dispatch(loading());
+                const res = await get(`users/${params.username}/rep`);
+                if (res.status === 200) {
+                    setRepos(res.data);
+                    dispatch(loading());
+                    setMessageErr(null);
+                }
+            } catch (error) {
+                dispatch(loading());
+                setMessageErr(error.message);
+            }
         };
         result();
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -42,7 +51,7 @@ function Repos() {
 
     return (
         <>
-            <h1>Repositories Of {params.username}</h1>
+            <h1>Repositories of {params.username}</h1>
             <Accordion defaultActiveKey={'0'}>
                 {state.isLoading ? <Spinner></Spinner> : render(repos)}
             </Accordion>
